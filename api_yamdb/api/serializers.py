@@ -1,3 +1,4 @@
+import re
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
@@ -42,7 +43,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             UniqueValidator(queryset=User.objects.all())
         ]
     )
-
+    
     def validate_username(self, value):
         if value.lower() == "me":
             raise serializers.ValidationError("Username 'me' is not valid")
