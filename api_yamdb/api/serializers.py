@@ -17,9 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
     email = serializers.EmailField(
         max_length=254,
-        validators=[
-            UniqueValidator(queryset=User.objects.all())
-        ]
+        validators=[UniqueValidator(queryset=User.objects.all())]
     )
 
     class Meta:
@@ -32,7 +30,9 @@ class NoAdminUserSerializer(serializers.ModelSerializer):
     """
     Сериализатор для пользователя без прав администратора.
     """
-    username = serializers.CharField(validators=[validate_username])
+    username = serializers.CharField(
+        max_length=150,
+        validators=[validate_username])
 
     class Meta:
         fields = ("username", "email", "first_name",
@@ -48,8 +48,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         max_length=150,
         validators=[validate_username,
-                    UniqueValidator(queryset=User.objects.all())
-                    ]
+                    UniqueValidator(queryset=User.objects.all())]
     )
     email = serializers.EmailField(
         max_length=254,

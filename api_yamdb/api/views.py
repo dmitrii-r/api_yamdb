@@ -30,20 +30,17 @@ def register(request):
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        user = get_object_or_404(
-            User,
-            username=serializer.validated_data['username']
-        )
+
     user = get_object_or_404(
         User,
         username=serializer.validated_data['username']
     )
     confirmation_code = default_token_generator.make_token(user)
     send_mail(
-        subject=f'Registration code for {user.username}',
+        subject=f'Registration code for {username}',
         message=f'Ваш код подтверждения для доступа: {confirmation_code}',
         from_email=None,
-        recipient_list=[user.email],
+        recipient_list=[email],
     )
 
     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -94,6 +91,10 @@ class UserViewSet(viewsets.ModelViewSet):
         permission_classes=(permissions.IsAuthenticated,),
     )
     def get_current_user_info(self, request):
+        """
+        В зависимости от роли используем нужный сериализатор,
+        и изменяем данные пользователя.
+        """
         serializer = UserSerializer(request.user)
         if request.method == 'PATCH':
             if request.user.is_admin:
