@@ -38,3 +38,7 @@ class Title(models.Model):
         verbose_name='Жанр',
         help_text='Жанр произведения',
     )
+    
+        def __str__(self):
+        return self.name
+        
