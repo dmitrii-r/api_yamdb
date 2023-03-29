@@ -1,8 +1,10 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from users.models import User
 from .validators import validate_username
+
+User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
