@@ -3,6 +3,9 @@ from django.db import models
 
 
 class User(AbstractUser):
+    """
+    Модель пользователя с разными правами в зависимости от роли.
+    """
     ADMIN = 'admin'
     MODERATOR = 'moderator'
     USER = 'user'
@@ -12,7 +15,8 @@ class User(AbstractUser):
         (USER, 'User'),
     ]
 
-    email = models.EmailField(max_length=254,
+    email = models.EmailField(
+        max_length=254,
         verbose_name='Адрес электронной почты',
         unique=True,
     )

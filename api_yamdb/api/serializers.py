@@ -1,29 +1,26 @@
-import re
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from users.models import User
+from .validators import validate_username
 
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(max_length=150,
-        validators=[
-            UniqueValidator(queryset=User.objects.all())
-        ],
-        required=True,
+    """
+    Сериализатор для пользователя с правами администратора.
+    """
+    username = serializers.CharField(
+        max_length=150,
+        validators=[validate_username,
+                    UniqueValidator(queryset=User.objects.all())
+                    ], required=True,
     )
-    email = serializers.EmailField(max_length=254,
+    email = serializers.EmailField(
+        max_length=254,
         validators=[
             UniqueValidator(queryset=User.objects.all())
         ]
     )
-
-    def validate_username(self, value):
-        if value.lower() == "me":
-            raise serializers.ValidationError("Username 'me' is not valid")
-        if re.search(r'^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$', value) is None:
-            raise serializers.ValidationError("Не допустимые символы")
-        return value
 
     class Meta:
         fields = ("username", "email", "first_name",
@@ -32,13 +29,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class NoAdminUserSerializer(serializers.ModelSerializer):
-    
-    def validate_username(self, value):
-        if value.lower() == "me":
-            raise serializers.ValidationError("Username 'me' is not valid")
-        if re.search(r'^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$', value) is None:
-            raise serializers.ValidationError("Не допустимые символы")
-        return value
+    """
+    Сериализатор для пользователя без прав администратора.
+    """
+    username = serializers.CharField(validators=[validate_username])
 
     class Meta:
         fields = ("username", "email", "first_name",
@@ -48,23 +42,19 @@ class NoAdminUserSerializer(serializers.ModelSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(max_length=150,
-        validators=[
-            UniqueValidator(queryset=User.objects.all())
-        ]
+    """
+    Сериализатор для регистрации пользователей.
+    """
+    username = serializers.CharField(
+        max_length=150,
+        validators=[validate_username,
+                    UniqueValidator(queryset=User.objects.all())
+                    ]
     )
-    email = serializers.EmailField(max_length=254,
-        validators=[
-            UniqueValidator(queryset=User.objects.all())
-        ]
+    email = serializers.EmailField(
+        max_length=254,
+        validators=[UniqueValidator(queryset=User.objects.all())]
     )
-
-    def validate_username(self, value):
-        if value.lower() == "me":
-            raise serializers.ValidationError("Username 'me' is not valid")
-        if re.search(r'^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$', value) is None:
-            raise serializers.ValidationError("Не допустимые символы")
-        return value
 
     class Meta:
         fields = ("username", "email")
@@ -72,5 +62,17 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class TokenSerializer(serializers.Serializer):
+    """
+    Сериализатор для проверки токена.
+    """
     username = serializers.CharField()
     confirmation_code = serializers.CharField()
+
+
+class EmailSerializer(serializers.Serializer):
+    """
+    Сериализатор для проверки пользователя,
+    зарегистрированного администратором.
+    """
+    username = serializers.CharField()
+    email = serializers.EmailField()

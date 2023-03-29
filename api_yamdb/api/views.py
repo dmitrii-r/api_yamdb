@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from users.models import User
 from .serializers import (RegisterSerializer,
+                          EmailSerializer,
                           TokenSerializer,
                           NoAdminUserSerializer,
                           UserSerializer)
@@ -18,9 +19,21 @@ from .permissions import IsAdmin
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 def register(request):
-    serializer = RegisterSerializer(data=request.data)
+    """
+    Отправка кода верификации на email.
+    """
+    serializer = EmailSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
-    serializer.save()
+    username = serializer.validated_data.get('username')
+    email = serializer.validated_data.get('email')
+    if not User.objects.filter(username=username, email=email).exists():
+        serializer = RegisterSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        user = get_object_or_404(
+            User,
+            username=serializer.validated_data['username']
+        )
     user = get_object_or_404(
         User,
         username=serializer.validated_data['username']
@@ -39,6 +52,9 @@ def register(request):
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 def get_jwt_token(request):
+    """
+    Получение токена для авторизации.
+    """
     serializer = TokenSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = get_object_or_404(
@@ -56,6 +72,9 @@ def get_jwt_token(request):
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    """
+    Создание и редактирование пользователя.
+    """
     lookup_field = 'username'
     queryset = User.objects.all()
     http_method_names = ['get', 'post', 'patch', 'delete']
