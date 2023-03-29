@@ -24,12 +24,6 @@ class Title(models.Model):
     name = models.CharField(max_length=200)
     year = models.IntegerField(verbose_name='Год выпуска',)
     description = models.TextField(max_length=3000)
-    # надо определиться, где и в какой момент будет пересчитываться рейтинг
-    rating = models.DecimalField(
-        default=5.0,
-        max_digits=3,
-        decimal_places=1,
-    )
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
