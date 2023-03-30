@@ -22,9 +22,9 @@ class IsAdminOrReadOnly(permissions.BasePermission):
 
 class IsAuthorModeratorAdminOrReadOnly(permissions.BasePermission):
     """
-    Доступ разрешён всем при безопасном иетоде,
+    Доступ разрешён всем при безопасном методе,
     аутентифицированные пользователи могут использовать метод POST,
-    остальные методы могут исрользовать автор,
+    остальные методы могут использовать автор,
     а также модератор, администратор и суперюзер.
     """
     def has_object_permission(self, request, view, obj):
