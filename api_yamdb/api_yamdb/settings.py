@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'users.apps.UsersConfig',
     'api.apps.ApiConfig',
-
+    'reviews.apps.ReviewsConfig'
 ]
 
 MIDDLEWARE = [
@@ -133,3 +133,4 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
