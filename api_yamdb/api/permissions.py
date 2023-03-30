@@ -27,7 +27,7 @@ class IsAuthorModeratorAdminOrReadOnly(permissions.BasePermission):
     остальные методы могут использовать автор,
     а также модератор, администратор и суперюзер.
     """
-        def has_permission(self, request, view):
+    def has_permission(self, request, view):
         return (request.method in permissions.SAFE_METHODS
                 or request.user.is_authenticated)
                 
