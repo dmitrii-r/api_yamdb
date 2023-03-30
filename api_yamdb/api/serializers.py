@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
@@ -14,6 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         max_length=150,
         validators=[validate_username,
+                    UnicodeUsernameValidator(),
                     UniqueValidator(queryset=User.objects.all())
                     ], required=True,
     )
@@ -34,7 +36,10 @@ class NoAdminUserSerializer(serializers.ModelSerializer):
     """
     username = serializers.CharField(
         max_length=150,
-        validators=[validate_username])
+        validators=[
+            validate_username,
+            UnicodeUsernameValidator()
+        ])
 
     class Meta:
         fields = ("username", "email", "first_name",
@@ -50,6 +55,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         max_length=150,
         validators=[validate_username,
+                    UnicodeUsernameValidator(),
                     UniqueValidator(queryset=User.objects.all())]
     )
     email = serializers.EmailField(
