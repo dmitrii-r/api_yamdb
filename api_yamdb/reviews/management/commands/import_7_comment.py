@@ -20,7 +20,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         Comment.objects.all().delete()
         csv_file_path = settings.BASE_DIR / 'static/data/comments.csv'
-
+        comments = []
         with open(csv_file_path, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -37,4 +37,5 @@ class Command(BaseCommand):
                 author = User.objects.get(id=author_id)
                 new_object.author = author
 
-                new_object.save()
+                comments.append(new_object)
+        Comment.objects.bulk_create(comments)

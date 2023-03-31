@@ -6,7 +6,8 @@ from reviews.models import Genre
 
 
 class Command(BaseCommand):
-    """Заполняет базу данных образцами жанров для произведений.
+    """
+    Заполняет базу данных образцами жанров для произведений.
     1. Очищает таблицу жанров в базе данных от всех строк.
     2. Импортирует данные из указанного csv-файла, подставляет их в поля
        модели и заполняет базу новыми объектами.
@@ -16,7 +17,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         Genre.objects.all().delete()
         csv_file_path = settings.BASE_DIR / 'static/data/genre.csv'
-
+        genres = []
         with open(csv_file_path, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -24,4 +25,5 @@ class Command(BaseCommand):
                 new_object.id = row['id']
                 new_object.name = row['name']
                 new_object.slug = row['slug']
-                new_object.save()
+                genres.append(new_object)
+        Genre.objects.bulk_create(genres)

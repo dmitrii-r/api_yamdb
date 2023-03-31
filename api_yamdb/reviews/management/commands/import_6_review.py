@@ -20,7 +20,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         Review.objects.all().delete()
         csv_file_path = settings.BASE_DIR / 'static/data/review.csv'
-
+        reviews = []
         with open(csv_file_path, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -38,4 +38,5 @@ class Command(BaseCommand):
                 author = User.objects.get(id=author_id)
                 new_object.author = author
 
-                new_object.save()
+                reviews.append(new_object)
+        Review.objects.bulk_create(reviews)

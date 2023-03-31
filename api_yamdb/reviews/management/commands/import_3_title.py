@@ -16,7 +16,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         Title.objects.all().delete()
         csv_file_path = settings.BASE_DIR / 'static/data/titles.csv'
-
+        titles = []
         with open(csv_file_path, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -29,4 +29,5 @@ class Command(BaseCommand):
                 category = Category.objects.get(id=category_id)
                 new_object.category = category
 
-                new_object.save()
+                titles.append(new_object)
+        Title.objects.bulk_create(titles)

@@ -6,7 +6,8 @@ from reviews.models import Category
 
 
 class Command(BaseCommand):
-    """Заполняет базу данных образцами категорий для произведений.
+    """
+    Заполняет базу данных образцами категорий для произведений.
     1. Очищает таблицу категорий в базе данных от всех строк.
     2. Импортирует данные из указанного csv-файла, подставляет их в поля
        модели и заполняет базу новыми объектами.
@@ -16,7 +17,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         Category.objects.all().delete()
         csv_file_path = settings.BASE_DIR / 'static/data/category.csv'
-
+        categories = []
         with open(csv_file_path, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -24,4 +25,5 @@ class Command(BaseCommand):
                 new_object.id = row['id']
                 new_object.name = row['name']
                 new_object.slug = row['slug']
-                new_object.save()
+                categories.append(new_object)
+        Category.objects.bulk_create(categories)
