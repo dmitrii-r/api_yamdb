@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import ReviewViewSet, UserViewSet, get_jwt_token, register
+from api.views import ReviewViewSet, UserViewSet, get_jwt_token, register
 
 
 app_name = 'api'
