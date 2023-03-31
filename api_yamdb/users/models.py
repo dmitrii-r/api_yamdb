@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.conf import settings
 from django.db import models
 
 
@@ -26,7 +27,6 @@ class User(AbstractUser):
     username = models.CharField(
         verbose_name='Имя пользователя',
         max_length=150,
-        null=True,
         unique=True,
         validators=[username_validator],
     )
@@ -38,7 +38,6 @@ class User(AbstractUser):
     )
     bio = models.TextField(
         verbose_name='О себе',
-        null=True,
         blank=True
     )
 
@@ -60,7 +59,7 @@ class User(AbstractUser):
 
         constraints = [
             models.CheckConstraint(
-                check=~models.Q(username__iexact="me"),
-                name="username_is_not_me"
+                check=~models.Q(username__iexact=settings.PROFILE_URL),
+                name=f'username_is_not_{settings.PROFILE_URL}'
             )
         ]
