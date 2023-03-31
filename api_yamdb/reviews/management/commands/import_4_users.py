@@ -11,7 +11,7 @@ class Command(BaseCommand):
     1. Очищает таблицу пользователей в базе данных от всех строк.
     2. Импортирует данные из указанного csv-файла, подставляет их в поля
        модели и заполняет базу новыми объектами.
-    Запуск команды: python3 manage.py import_1_users
+    Запуск команды: python3 manage.py import_4_users
     """
 
     def handle(self, *args, **kwargs):
