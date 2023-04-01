@@ -3,7 +3,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from .validators import validate_username
+from ..validators import validate_username
 
 User = get_user_model()
 
