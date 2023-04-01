@@ -18,8 +18,7 @@ class Command(BaseCommand):
         Genre.objects.all().delete()
         csv_file_path = settings.BASE_DIR / 'static/data/genre.csv'
         genres = []
-        with open(csv_file_path, 'r') as file:
-            reader = csv.DictReader(file)
+        with open(csv_file_path, 'r', encoding='utf-8') as file:            reader = csv.DictReader(file)
             for row in reader:
                 new_object = Genre()
                 new_object.id = row['id']

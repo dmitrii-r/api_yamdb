@@ -17,8 +17,7 @@ class Command(BaseCommand):
         Title.objects.all().delete()
         csv_file_path = settings.BASE_DIR / 'static/data/titles.csv'
         titles = []
-        with open(csv_file_path, 'r') as file:
-            reader = csv.DictReader(file)
+        with open(csv_file_path, 'r', encoding='utf-8') as file:            reader = csv.DictReader(file)
             for row in reader:
                 new_object = Title()
                 new_object.id = row['id']
