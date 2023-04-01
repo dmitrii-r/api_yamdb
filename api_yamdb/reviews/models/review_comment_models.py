@@ -37,8 +37,9 @@ class Review(models.Model):
     )
 
     class Meta:
-        verbose_name = "Отзыв"
-        verbose_name_plural = "Отзывы"
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+        default_related_name = 'reviews'
         constraints = [
             models.UniqueConstraint(
                 fields=['author', 'title'],
@@ -72,8 +73,9 @@ class Comment(models.Model):
     )
 
     class Meta:
-        verbose_name = "Комментарий"
-        verbose_name_plural = "Комментарии"
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        default_related_name = 'comments'
 
     def __str__(self):
         return self.text
