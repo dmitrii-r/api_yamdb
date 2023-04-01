@@ -10,10 +10,10 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from api.permissions import IsAdmin
 from api.serializers import (RegisterSerializer,
-                              EmailSerializer,
-                              TokenSerializer,
-                              NoAdminUserSerializer,
-                              UserSerializer)
+                             EmailSerializer,
+                             TokenSerializer,
+                             NoAdminUserSerializer,
+                             UserSerializer)
 
 User = get_user_model()
 

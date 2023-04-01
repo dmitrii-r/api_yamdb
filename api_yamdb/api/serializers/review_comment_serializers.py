@@ -12,7 +12,8 @@ class ReviewSerializer(serializers.ModelSerializer):
     Пользователь может оставить только один отзыв на произведение.
     """
     author = serializers.SlugRelatedField(
-        read_only=True, slug_field='username'
+        slug_field='username',
+        read_only=True
     )
     score = serializers.IntegerField(
         validators=[
