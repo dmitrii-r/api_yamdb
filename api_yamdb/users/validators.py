@@ -1,5 +1,8 @@
-from django.conf import settings
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework import serializers
+
+
+username_validator = UnicodeUsernameValidator()
 
 
 def validate_username(value):
@@ -7,8 +10,8 @@ def validate_username(value):
     Проверка соответсвия введённого имени,
     Username не может быть 'me'.
     """
-    if value.lower() == settings.PROFILE_URL:
+    if value.lower() == 'me':
         raise serializers.ValidationError(
-            f'Username {settings.PROFILE_URL} is not valid'
+            'Username не может быть me'
         )
     return value

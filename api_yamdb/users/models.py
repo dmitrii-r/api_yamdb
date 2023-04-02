@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.validators import UnicodeUsernameValidator
-from django.conf import settings
 from django.db import models
+
+from .validators import username_validator, validate_username
 
 
 class User(AbstractUser):
@@ -17,8 +17,6 @@ class User(AbstractUser):
         (USER, 'User'),
     ]
 
-    username_validator = UnicodeUsernameValidator()
-
     email = models.EmailField(
         max_length=254,
         verbose_name='Адрес электронной почты',
@@ -28,7 +26,7 @@ class User(AbstractUser):
         verbose_name='Имя пользователя',
         max_length=150,
         unique=True,
-        validators=[username_validator],
+        validators=[username_validator, validate_username],
     )
     role = models.CharField(
         verbose_name='Роль',
@@ -56,10 +54,3 @@ class User(AbstractUser):
         ordering = ['id']
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
-
-        constraints = [
-            models.CheckConstraint(
-                check=~models.Q(username__iexact=settings.PROFILE_URL),
-                name=f'username_is_not_{settings.PROFILE_URL}'
-            )
-        ]
