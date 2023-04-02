@@ -1,6 +1,6 @@
 from datetime import datetime
 from rest_framework import serializers
-from api.serializers import CategorySerializer
+from api.serializers import CategorySerializer, GenreSerializer
 
 from reviews.models import Title
 
@@ -13,13 +13,12 @@ class TitleSerializer(serializers.ModelSerializer):
     Рейтинг рассчитывается среднее арифметическое всех оценок произведения.
     """
     category = CategorySerializer()
+    genre = GenreSerializer(many=True)
+    rating = serializers.DecimalField(max_digits=3, decimal_places=1)
 
     class Meta:
         model = Title
-        fields = ('id', 'name', 'year', 'description', 'genre', 'category')
-
-        # genre и category должны быть встроенными сериализаторами
-        # добавить рейтинг
+        fields = ('id', 'name', 'year', 'rating', 'description', 'genre', 'category')
 
     def validate_year(self, value):
         if value > datetime.now().year():
