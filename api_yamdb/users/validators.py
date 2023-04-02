@@ -1,8 +1,4 @@
-from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework import serializers
-
-
-username_validator = UnicodeUsernameValidator()
 
 
 def validate_username(value):

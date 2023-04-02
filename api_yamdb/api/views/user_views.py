@@ -89,10 +89,9 @@ class UserViewSet(viewsets.ModelViewSet):
             'patch',
         ],
         detail=False,
-        url_path='me',
         permission_classes=(permissions.IsAuthenticated,),
     )
-    def get_current_user_info(self, request):
+    def me(self, request):
         """
         В зависимости от роли используем нужный сериализатор,
         и изменяем данные пользователя.
