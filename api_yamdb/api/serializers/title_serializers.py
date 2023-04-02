@@ -16,7 +16,7 @@ class TitleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Title
-        fields = ('id', 'year', 'name', 'description', 'genre', 'category')
+        fields = ('id', 'name', 'year', 'description', 'genre', 'category')
 
         # genre и category должны быть встроенными сериализаторами
         # добавить рейтинг
