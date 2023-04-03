@@ -22,14 +22,6 @@ class TitleListRetrieveSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'year', 'rating', 'description', 'genre',
                   'category')
 
-    # def validate_year(self, value):
-    #     if value > datetime.now().year:
-    #         raise serializers.ValidationError(
-    #             'Нельзя добавлять произведения, которые еще не вышли '
-    #             '(год выпуска не может быть больше текущего).'
-    #         )
-    #     return value
-
 
 class TitleCreateSerializer(serializers.ModelSerializer):
     """"
