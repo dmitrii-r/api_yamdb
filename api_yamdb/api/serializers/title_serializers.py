@@ -7,8 +7,7 @@ from reviews.models import Title, Category, Genre
 
 class TitleListRetrieveSerializer(serializers.ModelSerializer):
     """"
-    Сериализатор для произведений.
-    Год выхода не может быть больше дальше текущего года.
+    Сериализатор для GET-запроса произведений.
     Категория и жанр в виде встроенного сериализатора с name и slug.
     Рейтинг рассчитывается среднее арифметическое всех оценок произведения.
     """
@@ -25,10 +24,9 @@ class TitleListRetrieveSerializer(serializers.ModelSerializer):
 
 class TitleCreateSerializer(serializers.ModelSerializer):
     """"
-    Сериализатор для произведений.
+    Сериализатор для POST, PATCH-, DELETE-запроса произведений.
     Год выхода не может быть больше дальше текущего года.
-    Категория и жанр в виде встроенного сериализатора с name и slug.
-    Рейтинг рассчитывается среднее арифметическое всех оценок произведения.
+    Категорию и жанр надо указывать как slug из тех, что уже есть в базе.
     """
     category = serializers.SlugRelatedField(
         slug_field='slug',

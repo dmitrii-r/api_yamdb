@@ -7,6 +7,7 @@ from reviews.models import Title
 
 
 class TitleViewSet(viewsets.ModelViewSet):
+    """Вьюсет для произведенй."""
     serializer_class = TitleListRetrieveSerializer
     queryset = Title.objects.annotate(rating=Avg('reviews__score'))
     http_method_names = ["get", "post", "delete", "patch"]
