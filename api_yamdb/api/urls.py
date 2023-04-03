@@ -20,7 +20,7 @@ router_v1.register(
     CommentViewSet,
     basename='comments'
 )
-router_v1.register(r"titles", TitleViewSet)
+router_v1.register(r"titles", TitleViewSet, basename='titles')
 
 urlpatterns = [
     path('v1/', include(router_v1.urls)),

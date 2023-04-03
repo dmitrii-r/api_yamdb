@@ -14,14 +14,14 @@ class TitleSerializer(serializers.ModelSerializer):
     """
     category = CategorySerializer()
     genre = GenreSerializer(many=True)
-    rating = serializers.DecimalField(max_digits=3, decimal_places=1)
+    rating = serializers.DecimalField(max_digits=3, decimal_places=1, read_only=True)
 
     class Meta:
         model = Title
         fields = ('id', 'name', 'year', 'rating', 'description', 'genre', 'category')
 
     def validate_year(self, value):
-        if value > datetime.now().year():
+        if value > datetime.now().year:
             raise serializers.ValidationError(
                 'Нельзя добавлять произведения, которые еще не вышли '
                 '(год выпуска не может быть больше текущего).'
