@@ -2,32 +2,25 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.db.models import Avg
 
-from api.serializers import TitleSerializer
+from api.serializers import TitleListRetrieveSerializer, TitleCreateSerializer
 from api.permissions import IsAdminOrReadOnly
 from reviews.models import Title
 
 
-class TitleViewSet(viewsets.ViewSet):
-    # serializer_class = TitleSerializer
-    # queryset = Title.objects.annotate(rating=Avg('reviews__score'))
+class TitleViewSet(viewsets.ModelViewSet):
+    serializer_class = TitleListRetrieveSerializer
+    queryset = Title.objects.annotate(rating=Avg('reviews__score'))
+    http_method_names = ["get", "post", "delete", "patch"]
     permission_classes = (IsAdminOrReadOnly,)
     # добавить фильтры
-
-        
-    # - list(self, request)
-    # - create(self, request)
-    # - retrieve(self, request, pk=None)
-    # - update(self, request, pk=None)
-    # - partial_update(self, request, pk=None)
-    # - destroy(self, request, pk=None)
-
-    def list(self, request):
-        queryset = Title.objects.annotate(rating=Avg('reviews__score'))
-        serializer = TitleSerializer(queryset, many=True)
-        return Response(serializer.data)
     
     # def get_permissions(self):
     #     """
     #     Instantiates and returns the list of permissions that this view requires.
     #     """
     #     return (IsAdminOrReadOnly,)
+
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve'):
+            return TitleListRetrieveSerializer
+        return TitleCreateSerializer
