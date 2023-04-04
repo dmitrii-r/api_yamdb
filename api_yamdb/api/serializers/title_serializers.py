@@ -13,13 +13,14 @@ class TitleListRetrieveSerializer(serializers.ModelSerializer):
     """
     category = CategorySerializer()
     genre = GenreSerializer(many=True)
-    rating = serializers.DecimalField(max_digits=3, decimal_places=1,
-                                      read_only=True)
+    rating = serializers.IntegerField(default=0)
 
     class Meta:
         model = Title
         fields = ('id', 'name', 'year', 'rating', 'description', 'genre',
                   'category')
+        read_only_fields = ('id', 'name', 'year', 'rating', 'description',
+                            'genre', 'category')
 
 
 class TitleCreateSerializer(serializers.ModelSerializer):
@@ -49,3 +50,6 @@ class TitleCreateSerializer(serializers.ModelSerializer):
                 '(год выпуска не может быть больше текущего).'
             )
         return value
+
+    def to_representation(self, instance):
+        return TitleListRetrieveSerializer(instance).data
