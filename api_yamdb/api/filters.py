@@ -4,6 +4,7 @@ from reviews.models import Title
 
 
 class TitleFilter(django_filters.FilterSet):
+    """Фильтр для произведений по имени, году, слагу категории и жанра."""
     name = django_filters.CharFilter(lookup_expr='contains')
     category = django_filters.CharFilter(field_name='category__slug',
                                          lookup_expr='iexact')

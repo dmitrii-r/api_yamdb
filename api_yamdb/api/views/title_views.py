@@ -9,7 +9,7 @@ from api.filters import TitleFilter
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    """Вьюсет для произведенй."""
+    """Вьюсет для произведений."""
     serializer_class = TitleListRetrieveSerializer
     queryset = Title.objects.annotate(rating=Avg('reviews__score'))
     http_method_names = ["get", "post", "delete", "patch"]
