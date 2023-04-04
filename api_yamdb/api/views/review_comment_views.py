@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.exceptions import NotFound
 
 from api.permissions import IsAuthorModeratorAdminOrReadOnly
 from api.serializers import CommentSerializer, ReviewSerializer
@@ -43,12 +42,11 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthorModeratorAdminOrReadOnly,)
 
     def get_review(self):
-        if Review.objects.filter(
-                pk=self.kwargs.get('review_id'),
-                title_id=self.kwargs.get('title_id')
-        ).exists():
-            return get_object_or_404(Review, pk=self.kwargs.get('review_id'))
-        raise NotFound
+        return get_object_or_404(
+            Review,
+            pk=self.kwargs.get('review_id'),
+            title_id=self.kwargs.get('title_id')
+        )
 
     def get_queryset(self):
         return self.get_review().comments.all()
