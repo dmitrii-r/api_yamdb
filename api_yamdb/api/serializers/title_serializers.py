@@ -13,7 +13,7 @@ class TitleListRetrieveSerializer(serializers.ModelSerializer):
     """
     category = CategorySerializer()
     genre = GenreSerializer(many=True)
-    rating = serializers.IntegerField(default=0)
+    rating = serializers.IntegerField(default=1)
 
     class Meta:
         model = Title
