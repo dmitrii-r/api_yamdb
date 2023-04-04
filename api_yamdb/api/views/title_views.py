@@ -11,7 +11,10 @@ from api.filters import TitleFilter
 class TitleViewSet(viewsets.ModelViewSet):
     """Вьюсет для произведений."""
     serializer_class = TitleListRetrieveSerializer
-    queryset = Title.objects.annotate(rating=Avg('reviews__score'))
+    queryset = (Title.objects.select_related('category')
+                .prefetch_related('genre')
+                .annotate(rating=Avg('reviews__score'))
+                )
     http_method_names = ["get", "post", "delete", "patch"]
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
