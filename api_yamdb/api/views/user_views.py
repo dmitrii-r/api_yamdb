@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
+from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from rest_framework import filters, permissions, status, viewsets
@@ -89,9 +90,10 @@ class UserViewSet(viewsets.ModelViewSet):
             'patch',
         ],
         detail=False,
+        url_path=settings.PROFILE_URL,
         permission_classes=(permissions.IsAuthenticated,),
     )
-    def me(self, request):
+    def get_current_user_info(self, request):
         """
         В зависимости от роли используем нужный сериализатор,
         и изменяем данные пользователя.
