@@ -9,6 +9,6 @@ def validate_username(value):
     """
     if value.lower() == settings.PROFILE_URL:
         raise serializers.ValidationError(
-            f'Username {settings.PROFILE_URL} is not valid'
+            f'Username не может быть {settings.PROFILE_URL}'
         )
     return value
