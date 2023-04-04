@@ -74,10 +74,6 @@ class Review(models.Model):
     score = models.IntegerField(
         verbose_name='Оценка',
         default=1,
-        validators=[
-            MinValueValidator(1, message='Минимальная оценка 1'),
-            MaxValueValidator(10, message='Максимальная оценка 10')
-        ]
     )
 
     class Meta:
